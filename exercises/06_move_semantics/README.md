@@ -8,3 +8,9 @@ For this section, the book links are especially important.
 
 - [Ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
 - [Reference and borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+
+
+同一个时间 只能操作一个可变引用
+*表示解引用
+
+防止所有权转移：引用与clone
