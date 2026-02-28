@@ -11,11 +11,37 @@ impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<Self, CreationError> {
         // TODO: This function shouldn't always return an `Ok`.
         // Read the tests below to clarify what should be returned.
-        Ok(Self(value as u64))
+        if value < 0 {
+            Err(CreationError::Negative)
+        } else if value == 0 {
+            Err(CreationError::Zero)
+        } else {
+            Ok(Self(value as u64))
+        }
     }
+}
+#[derive(PartialEq, Debug)]
+struct A{
+    x: u64,
+    y: u64,
 }
 
 fn main() {
+    let a = A{
+        x: 10,
+        y: 20,
+    };
+        let b = A{
+        x: 10,
+        y: 20,
+    };
+    // assert_eq!(a, b);
+    if a == b {
+        println!("a and b are equal");
+    } else {
+        println!("a and b are not equal");
+    }
+
     // You can optionally experiment here.
 }
 
