@@ -34,13 +34,36 @@ impl Default for Person {
 // 5. Parse the second element from the split operation into a `u8` as the age.
 // 6. If parsing the age fails, return the default of `Person`.
 impl From<&str> for Person {
-    fn from(s: &str) -> Self {}
+    fn from(s: &str) -> Self {
+        Self{
+            name: if  !s.trim().split(',').nth(0).unwrap_or_default().is_empty() && !s.trim().split(',').nth(1).unwrap_or_default().is_empty() &&  s.trim().split(',').nth(1).and_then(|v| v.parse::<u8>().ok()).is_some() &&  s.trim().split(',').count() == 2  {
+                  s.trim().split(',').nth(0).unwrap().to_string()
+                
+                
+               
+            } else {
+               "John".to_string()
+            },
+            age: if !s.trim().split(',').nth(0).unwrap_or_default().is_empty() && !s.trim().split(',').nth(1).unwrap_or_default().is_empty()  && s.trim().split(',').nth(1).and_then(|v| v.parse::<u8>().ok()).is_some()  && s.trim().split(',').count() == 2  {
+                 s.trim().split(',').nth(1).unwrap().parse::<u8>().unwrap_or(30)
+                
+            } else {
+                 30
+               
+            },  
+            // age: s.trim().split(',').nth(1).unwrap_or("30").parse::<u8>().unwrap_or(30),
+        }
+    }
 }
 
 fn main() {
     // Use the `from` function.
     let p1 = Person::from("Mark,20");
     println!("{p1:?}");
+    let p3 =  Person::from("Mike,32,");
+    println!("stest {:?}",p3);
+
+
 
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();

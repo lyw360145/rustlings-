@@ -7,19 +7,24 @@ use std::{sync::Arc, thread, time::Duration};
 struct JobStatus {
     jobs_done: u32,
 }
+use std::sync::Mutex;
+
 
 fn main() {
     // TODO: `Arc` isn't enough if you want a **mutable** shared state.
-    let status = Arc::new(JobStatus { jobs_done: 0 });
+    let status = Arc::new(Mutex::new(JobStatus { jobs_done: 0 }));
 
     let mut handles = Vec::new();
     for _ in 0..10 {
         let status_shared = Arc::clone(&status);
         let handle = thread::spawn(move || {
             thread::sleep(Duration::from_millis(250));
-
+            let mut status = status_shared.lock().unwrap();
+            
             // TODO: You must take an action before you update a shared value.
-            status_shared.jobs_done += 1;
+            status.jobs_done += 1;
+            // status_shared.jobs_done
+
         });
         handles.push(handle);
     }
@@ -30,5 +35,6 @@ fn main() {
     }
 
     // TODO: Print the value of `JobStatus.jobs_done`.
-    println!("Jobs done: {}", todo!());
+    let status = status.lock().unwrap();
+    println!("Jobs done: {}", status.jobs_done);
 }
